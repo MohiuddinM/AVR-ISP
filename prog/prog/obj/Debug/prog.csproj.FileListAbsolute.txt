@@ -1,0 +1,6 @@
+c:\users\inspiron\documents\visual studio 2012\Projects\prog\prog\bin\Debug\prog.exe.config
+c:\users\inspiron\documents\visual studio 2012\Projects\prog\prog\bin\Debug\prog.exe
+c:\users\inspiron\documents\visual studio 2012\Projects\prog\prog\bin\Debug\prog.pdb
+c:\users\inspiron\documents\visual studio 2012\Projects\prog\prog\obj\Debug\prog.csprojResolveAssemblyReference.cache
+c:\users\inspiron\documents\visual studio 2012\Projects\prog\prog\obj\Debug\prog.exe
+c:\users\inspiron\documents\visual studio 2012\Projects\prog\prog\obj\Debug\prog.pdb
