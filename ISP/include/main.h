@@ -35,6 +35,9 @@
 #define CMD_START_ISP		4
 #define CMD_FLASH_ERASE		5
 #define CMD_VERIFY_FLASH	6
+#define CMD_READ_FLASH		7
+#define CMD_PROG_EEPROM		8
+#define CMD_READ_EEPROM		9
 #define END					255
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */

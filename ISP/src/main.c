@@ -30,10 +30,11 @@
 __ALIGN_BEGIN USBD_HandleTypeDef hUSBDDevice __ALIGN_END;
 
 unsigned int pageFlashAddr = 0,
-			 pageSize, totalWritten,
+			 pageSize,
+			 totalWritten,
 			 cmd = 0,
-			 temp;
-unsigned int bytesWritten = 0;
+			 temp,
+			 bytesWritten = 0;
 
 
 /* Private function prototypes -----------------------------------------------*/
@@ -41,6 +42,7 @@ void SysClockConfig(void);
 int SPI_command(void);
 void Init(void);
 void verify(void);
+void fuseProgram(void);
 /*----------------------------------------------------------------------------*/
 
 
@@ -61,50 +63,44 @@ int main(void)
 	while (ComPortClosed);
 	HAL_Delay(500);
 
-	if(ispStart(3) == 0) printf("ISP STARTED\n");
-	else printf("ISP FAILED\n");
+	if(ispStart(3) == 0) printf("0\n");
+	else printf("0\n");
 	while(cmd != END)
 	{
 		scanf("%u", &cmd);
-		if(cmd == CMD_PROG_FLASH)
+		switch(cmd)
 		{
+		case CMD_PROG_FLASH:
 			printf("%d\n", SPI_command());
-		}
-		else if(cmd == CMD_DEF_PAGE_SIZE)
-		{
+			break;
+		case CMD_DEF_PAGE_SIZE:
 			scanf("%u", &pageSize);
-			printf("PAGE_SIZE - %u\n", pageSize);
-		}
-		else if(cmd == CMD_SET_FUSE)
-		{
-			unsigned char hFuse, lFuse;
-			scanf("%hhu", &hFuse);
-			scanf("%hhu", &lFuse);
-			ispWriteFuse(hFuse, lFuse);
-			HAL_Delay(10);
-			printf("CMD_SET_FUSE - OK\n");
-		}
-		else if(cmd == CMD_START_ISP)
-		{
+			printf("0\n", pageSize);
+			break;
+		case CMD_SET_FUSE:
+			fuseProgram();
+			break;
+		case CMD_START_ISP:
 			scanf("%u", &temp);
-			if(ispStart(temp) == 0) printf("CMD_SPEED - OK\n");
-			else printf("CMD_SPEED - FAILED\n");
-		}
-		else if(cmd == CMD_FLASH_ERASE)
-		{
+			if(ispStart(temp) == 0) printf("0\n");
+			else printf("1\n");
+			break;
+		case CMD_FLASH_ERASE:
 			ispErase();
 			HAL_Delay(100);
-			printf("CMD_ERASE - OK\n");
-		}
-		else if(CMD_VERIFY_FLASH)
-		{
+			printf("0\n");
+			break;
+		case CMD_VERIFY_FLASH:
 			verify();
-		}
-		else // cmd == END
-		{
+			break;
+		case CMD_READ_FLASH:
+			break;
+		default:
 			ispDisconnect();
 			printf("0\n");
+			break;
 		}
+
 	}
 	while(1)
 	{
@@ -112,7 +108,6 @@ int main(void)
 		HAL_Delay(40);
 	}
 }
-
 int SPI_command(void)
 {
 	unsigned int  address;
@@ -141,6 +136,15 @@ int SPI_command(void)
 	}
 	return 0;
 }
+void fuseProgram(void)
+{
+	unsigned char hFuse, lFuse;
+	scanf("%hhu", &hFuse);
+	scanf("%hhu", &lFuse);
+	ispWriteFuse(hFuse, lFuse);
+	HAL_Delay(10);
+	printf("CMD_SET_FUSE - OK\n");
+}
 void verify(void)
 {
 	for(unsigned int i = 0; i < totalWritten; i++)
@@ -149,7 +153,6 @@ void verify(void)
 	}
 	printf("END\n");
 }
-
 void Init(void)
 {
 	SystemInit();
@@ -197,7 +200,6 @@ void Init(void)
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
 
 }
-
 void Error_Handler(void)
 {
 	/* Turn LED5 (RED) on */
@@ -207,7 +209,6 @@ void Error_Handler(void)
 	{
 	}
 }
-
 void SysClockConfig(void)
 {
 	RCC_ClkInitTypeDef RCC_ClkInitStruct;
@@ -246,4 +247,3 @@ void SysClockConfig(void)
 	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 	HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
 }
-

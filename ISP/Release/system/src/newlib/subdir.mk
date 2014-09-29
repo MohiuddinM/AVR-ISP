@@ -3,9 +3,6 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
-CPP_SRCS += \
-../system/src/newlib/_cxx.cpp 
-
 C_SRCS += \
 ../system/src/newlib/_exit.c \
 ../system/src/newlib/_sbrk.c \
@@ -13,6 +10,9 @@ C_SRCS += \
 ../system/src/newlib/_syscalls.c \
 ../system/src/newlib/_write.c \
 ../system/src/newlib/assert.c 
+
+CPP_SRCS += \
+../system/src/newlib/_cxx.cpp 
 
 OBJS += \
 ./system/src/newlib/_cxx.o \
